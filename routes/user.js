@@ -9,7 +9,7 @@ const {
     verifyToken,
     getUsers,
     likeDislikeUser,
-    whatsAppSendMessage,
+    // whatsAppSendMessage,
     forgotPassword,
     selectPlan,
     blockUsers,
@@ -25,7 +25,7 @@ const {addBank}= require("../controller/bank")
 const router = express.Router();
 
 // router.route("/verifyToken").post(verifyToken)
-router.route("/whatsAppSendMessage").post(whatsAppSendMessage)
+// router.route("/whatsAppSendMessage").post(whatsAppSendMessage)
 // router.route("/get/photo").get(loginuse)
 router.route("/register").post(register)
 router.route("/login").post(login)

@@ -11,6 +11,8 @@ const SelectedPlan = require("../models/form");
 const otpGenerator = require("otp-generator");
 const mine = require("../models/Mine");
 const reward = require("../models/Reward");
+const { errorMessages, successMessages, createErrorResponse, createSuccessResponse } = require('../controller/AuthErros');
+
 // const PDFDocument = require("pdfkit");
 // const fs = require("fs");
 // const { log } = require("console");
@@ -55,33 +57,40 @@ const reward = require("../models/Reward");
 //     }
 
 // }
-
+const saltRounds = 10;
 exports.register = async (req, res) => {
-  console.log("req.body", req.body);
   try {
-    const { name, email } = req.body;
-
-    if (!name || !email) {
-      return res.status(400).json({ message: "All fields required", status: false });
+    const { name, email, password } = req.body;
+    if (!email) {
+      return createErrorResponse(res, errorMessages.emailError);
+    }
+    if (!name) {
+      return createErrorResponse(res, errorMessages.nameError);
+    }
+    if (!password) {
+      return createErrorResponse(res, errorMessages.passwordError);
     }
 
-    const existingUser = await user.findOne({ email: email });
+    // Check if user exists
+    const existingUser = await user.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists" });
+      return createErrorResponse(res, "Email already exists");
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    // Register the user (assuming user creation logic is in place)
     const newUser = await user.create({
       name,
       email: email.toLowerCase(),
-      mobileOtp: otp,
-      isVerified: false // Assuming you have this field in your user schema
+      password, // Remember to hash it in real scenarios
+      isVerified: false
     });
 
-    return res.status(200).json({ data: newUser, status: true });
+    // Return success response
+    return createSuccessResponse(res, newUser, successMessages.registrationSuccess);
+    
   } catch (e) {
     console.error("Error in registration:", e);
-    return res.status(500).json({ message: "Internal server error", status: false });
+    return createErrorResponse(res, errorMessages.internalServerError, 500);
   }
 };
 const userMineData = [
