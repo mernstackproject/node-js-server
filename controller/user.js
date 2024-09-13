@@ -439,28 +439,28 @@ exports.likeDislikeUser = async (req, res) => {
   }
 };
 
-exports.whatsAppSendMessage = async (req, res) => {
-  try {
-    const data = await client.messages.create({
-      body: req.body.message,
-      from: "whatsapp:+14155238886",
-      to: "whatsapp:" + req.body.to,
-    });
-    console.log("data:", data);
-    if (data) {
-      return res
-        .status(200)
-        .json({ message: "Message sent", status: true, data: data });
-    } else {
-      return res
-        .status(400)
-        .json({ message: "Message not sent", status: false });
-    }
-  } catch (e) {
-    console.log("Error:", e.message);
-    res.status(500).json({ message: "Internal server error", status: false });
-  }
-};
+// exports.whatsAppSendMessage = async (req, res) => {
+//   try {
+//     const data = await client.messages.create({
+//       body: req.body.message,
+//       from: "whatsapp:+14155238886",
+//       to: "whatsapp:" + req.body.to,
+//     });
+//     console.log("data:", data);
+//     if (data) {
+//       return res
+//         .status(200)
+//         .json({ message: "Message sent", status: true, data: data });
+//     } else {
+//       return res
+//         .status(400)
+//         .json({ message: "Message not sent", status: false });
+//     }
+//   } catch (e) {
+//     console.log("Error:", e.message);
+//     res.status(500).json({ message: "Internal server error", status: false });
+//   }
+// };
 
 // create api for user enquiry for hotels about rooms according to date or name, email
 exports.createEnquiry = async (req, res) => {
